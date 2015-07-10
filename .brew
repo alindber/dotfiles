@@ -35,6 +35,8 @@ brew install tree
 brew install the_silver_searcher
 # better than vim, beta
 brew install --HEAD neovim
+# fuzzy searching
+brew install --HEAD fzf
 
 
 
