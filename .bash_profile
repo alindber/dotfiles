@@ -31,4 +31,15 @@ if [ -f `brew --prefix`/etc/bash_completion ]; then
     . `brew --prefix`/etc/bash_completion
 fi
 
-[[ -s ~/.nvm/nvm.sh ]] && . ~/.nvm/nvm.sh # This loads NVM
+if [ -d $(brew --prefix nvm) ]; then
+  export NVM_DIR=~/.nvm;
+  source $(brew --prefix nvm)/nvm.sh;
+fi
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# adds npm completion
+. <(npm completion)
+
+# fzf completion
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
