@@ -22,12 +22,14 @@
 	ca = !git add --all && git commit -av
 	# Commit all and amend to last commit
 	caa = commit --all --amend -C HEAD
-	# commit staged and amend to last commit 
+	# commit staged and amend to last commit
 	csa = commit --amend -C HEAD
 	# commit with fixup
 	caf = commit --all --fixup HEAD
 	# Checkout
 	co = checkout
+	# Cherry-pick
+	cp = cherry-pick
 	# Switch to a branch, creating it if necessary
 	go = checkout -B
 	# Show verbose output about tags, branches or remotes
@@ -88,51 +90,48 @@
 	added = yellow
 	changed = green
 	untracked = cyan
-[merge]
-	# Include summaries of merged commits in newly created merge commit messages
-	log = true
-	tool = p4mergetool
 
 # Use `origin` as the default remote on the `master` branch in all cases
 [branch "master"]
 	remote = origin
 	merge = refs/heads/master
+[branch "develop"]
+    remote = origin
+    merge = refs/heads/develop
+[remote "origin"]
+    fetch = +refs/pull-requests/*:refs/remotes/origin/pull/*
 
 # URL shorthands
-[url "git@github.com:"]
-	insteadOf = "gh:"
-	pushInsteadOf = "github:"
-	pushInsteadOf = "git://github.com/"
-[url "git://github.com/"]
-	insteadOf = "github:"
-[url "git@gist.github.com:"]
-	insteadOf = "gst:"
-	pushInsteadOf = "gist:"
-	pushInsteadOf = "git://gist.github.com/"
-[url "git://gist.github.com/"]
-	insteadOf = "gist:"
+[http]
+	sslVerify = false
 [url "https://github.com"]
 	insteadOf = git://github.com
 
 [push]
 	default = simple
-[diff]
-	tool = p4mergetool
-[difftool "diffmerge"]
-	cmd = diffmerge \"$LOCAL\" \"$REMOTE\"
-[difftool "p4mergetool"]
-	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $LOCAL $REMOTE\n
-	trustExitCode = true
-[mergetool]
-	keepBackup = false
-[mergetool "diffmerge"]
-	cmd = "diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$(if test -f \"$BASE\"; then echo \"$BASE\"; else echo \"$LOCAL\"; fi)\" \"$REMOTE\""
-[mergetool "p4mergetool"]
-	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
+[merge]
+  keepBackup = false
+	tool = p4merge
+[mergetool "p4merge"]
+	cmd = /Applications/p4merge.app/Contents/MacOS/p4merge "\"$PWD/$BASE\"" "\"$PWD/$REMOTE\"" "\"$PWD/$LOCAL\"" "\"$PWD/$MERGED\""
+	keepTemporaries = false
 	trustExitCode = false
+	keepBackup = false
+[diff]
+    tool = p4merge
+[difftool "p4merge"]
+	cmd = /Applications/p4merge.app/Contents/MacOS/p4merge "\"$REMOTE\"" "\"$LOCAL\""
+	prompt = false
 [credential]
 	helper = osxkeychain
 [rebase]
 	autosquash = true
 [rerere]
 	enabled = true
+[user]
+	name = Andy Lindberg
+	email = andy.lindberg@hpe.com
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true

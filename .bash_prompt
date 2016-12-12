@@ -1,12 +1,12 @@
 # @gf3’s Sexy Bash Prompt, inspired by “Extravagant Zsh Prompt”
 # Shamelessly copied from https://github.com/gf3/dotfiles
 
-default_username='jason'
+default_username='andy'
 
 if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
-	export TERM=gnome-256color
+  export TERM=gnome-256color
 elif infocmp xterm-256color >/dev/null 2>&1; then
-	export TERM=xterm-256color
+  export TERM=xterm-256color
 fi
 
 # Adjusted to Tomorrow Night theme
@@ -22,12 +22,12 @@ function parse_git_dirty() {
 }
 
 function parse_git_branch() {
-	git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
 # Only show username/host if not default
 function usernamehost() {
-	if [ $USER != $default_username ]; then echo "${PURPLE}$USER ${WHITE}at ${ORANGE}$HOSTNAME $WHITEin "; fi
+  if [ $USER != $default_username ]; then echo "${PURPLE}$USER ${WHITE}at ${ORANGE}$HOSTNAME $WHITEin "; fi
 }
 
 # iTerm Tab and Title Customization and prompt customization
